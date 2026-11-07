@@ -1,0 +1,114 @@
+// Real media clock, SQLite and Electron; synthetic data in an isolated portable root.
+import {_electron as electron} from 'playwright';
+import {Worker} from 'node:worker_threads';
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const project=process.cwd(),packaged=process.argv.includes('--release');
+const root=path.join(project,'cache','listening-modes-'+Date.now());
+const reportDir=path.join(project,'reports/listening-modes');
+fs.mkdirSync(path.join(root,'data/media/course'),{recursive:true});
+fs.mkdirSync(path.join(root,'cache/tmp'),{recursive:true});fs.mkdirSync(reportDir,{recursive:true});
+const report={passed:false,root,checks:[]},check=name=>{report.checks.push(name);console.log('PASS',name);};
+const bytes=16000*40*2,wav=Buffer.alloc(44+bytes);
+wav.write('RIFF');wav.writeUInt32LE(36+bytes,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);
+wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(16000,24);wav.writeUInt32LE(32000,28);
+wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(bytes,40);
+fs.writeFileSync(path.join(root,'data/media/course/sample.wav'),wav);
+const code=packaged?'release/ListeningProMax/app/resources/app/out':'out';
+let worker,app,page,seq=0;
+const db=(method,args={})=>new Promise((resolve,reject)=>{
+  const id=++seq,timer=setTimeout(()=>{worker.off('message',listener);reject(Error('DB timeout'));},10000);
+  const listener=m=>{if(m.id!==id)return;clearTimeout(timer);worker.off('message',listener);m.error?reject(Error(m.error)):resolve(m.result);};
+  worker.on('message',listener);worker.postMessage({id,method,args});
+});
+const lesson={id:'course',title:'playback-smoke-listening-modes',createdAt:'now',updatedAt:'now',version:1,durationMs:40000,mediaFile:'data/media/course/sample.wav',originalText:'',reference:'',positionMs:4200,rate:1,loop:'off',hidden:false,referenceCollapsed:true,sentences:Array.from({length:10},(_,i)=>({id:'s'+i,text:'今日はいい天気ですね。日本語を聞きましょう。',startMs:i*4000,endMs:i*4000+3600,words:[],issues:[],translation:'今天天气真好，一起听日语吧。'}))};
+const env={...process.env,LPM_ROOT:root,TEMP:path.join(root,'cache/tmp'),TMP:path.join(root,'cache/tmp')};delete env.ELECTRON_RUN_AS_NODE;
+const launch=async()=>{app=await electron.launch({executablePath:path.join(project,packaged?'release/ListeningProMax/app/ListeningProMax.App.exe':'node_modules/electron/dist/electron.exe'),args:packaged?[]:[project],cwd:project,env});page=await app.firstWindow();await page.setViewportSize({width:1280,height:900});};
+const api=(method,args={})=>page.evaluate(({method,args})=>window.api.call(method,args),{method,args});
+const media=()=>page.locator('audio').evaluate(a=>({time:a.currentTime,rate:a.playbackRate,paused:a.paused}));
+const mode=()=>page.getByLabel('听力模式',{exact:true});
+const pause=()=>page.locator('audio').evaluate(a=>a.pause());
+const press=key=>page.keyboard.press(key);
+const assertMode=async(id,rate,loop)=>{
+  await page.waitForFunction(id=>document.querySelector('[aria-label="听力模式"]')?.value===id,id);
+  assert.equal((await media()).rate,rate);
+  assert.equal(await page.getByLabel('播放速度',{exact:true}).inputValue(),String(rate));
+  assert.equal(await page.locator('.loop span').innerText(),loop==='off'?'不循环':'单句循环');
+};
+const jump=async()=>{await page.locator('#sentence-s1').evaluate(e=>e.click());await page.waitForTimeout(180);};
+const waitGap=async()=>{
+  await page.locator('audio').evaluate(async a=>{a.currentTime=7.62;await a.play();});
+  await page.waitForFunction(()=>document.querySelector('audio').paused);
+};
+try{
+  worker=new Worker(path.join(project,code,'db-worker.cjs'),{workerData:{root}});
+  await new Promise((resolve,reject)=>{worker.on('message',m=>{if(m.ready)resolve();});worker.on('error',reject);});
+  await db('create',lesson);await db('settings',{playback:{padding:false,loopPause:true}});
+  await worker.terminate();worker=null;
+  await launch();assert(await mode().isDisabled());check('no loaded course: mode selector disabled');
+  await page.getByRole('heading',{name:lesson.title,exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('audio').readyState>=2);
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=4.2);
+  const start=await media();
+  for(const [key,id,rate,loop] of [['2','modeIntensive',1,'sentence'],['3','modeFast',1.25,'off'],['4','modeFastIntensive',1.25,'sentence'],['1','modeNormal',1,'off']]){
+    await press(key);await assertMode(id,rate,loop);assert.equal((await media()).time,start.time);assert((await media()).paused);
+    assert.equal(await page.locator('.sentence.current').getAttribute('id'),'sentence-s1');
+  }
+  check('1–4 update real speed and loop atomically; paused position/current sentence preserved');
+  await press('Space');const before=await media();
+  await press('4');await assertMode('modeFastIntensive',1.25,'sentence');const after=await media();
+  assert(!after.paused&&after.time>=before.time&&after.time-before.time<1);
+  await pause();check('switching while playing does not pause or seek');
+  for(const key of ['Control+1','Alt+2','Shift+3'])await press(key);
+  await assertMode('modeFastIntensive',1.25,'sentence');
+  await page.locator('#sentence-s1').getByRole('button',{name:'编辑文字与时间',exact:true}).click();
+  await page.locator('.editor textarea').fill('');await page.locator('.editor textarea').pressSequentially('1234');
+  assert.equal(await page.locator('.editor textarea').inputValue(),'1234');await assertMode('modeFastIntensive',1.25,'sentence');
+  await page.getByRole('button',{name:'关闭编辑',exact:true}).click();
+  // 3 has no native speed-menu typeahead match, so any change would be a leaked shortcut.
+  await page.getByLabel('播放速度',{exact:true}).focus();await press('3');await assertMode('modeFastIntensive',1.25,'sentence');
+  await page.getByLabel('播放速度',{exact:true}).evaluate(e=>e.blur());check('editor, focused selects and modifier combinations do not activate modes');
+  await press('1');await press('Shift');await assertMode('modeIntensive',1,'sentence');
+  await page.getByLabel('播放速度',{exact:true}).selectOption('1.25');await assertMode('modeFastIntensive',1.25,'sentence');
+  await page.getByLabel('播放速度',{exact:true}).selectOption('0.75');assert.equal(await mode().inputValue(),'custom');
+  await mode().selectOption('modeFast');await assertMode('modeFast',1.25,'off');
+  await press('Space');assert(!(await media()).paused);await press('Space');assert((await media()).paused);
+  check('manual speed/Shift keep mode label accurate; mouse menu releases focus before Space');
+  await press('2');await jump();await waitGap();
+  await press('4');assert((await media()).paused);assert(Math.abs((await media()).time-7.6)<.05);
+  await page.waitForTimeout(600);const restarted=await media();assert(!restarted.paused&&restarted.time<5.5&&restarted.rate===1.25);
+  await pause();check('switching intensive speed retains 500 ms silent wait and correct restart target');
+  await press('2');await jump();await waitGap();await press('3');await page.waitForTimeout(600);
+  const continuous=await media();assert(!continuous.paused&&continuous.time>7.6&&continuous.rate===1.25);
+  await pause();check('leaving loop during wait cancels old timer and continues without jumping back');
+  await press('2');await jump();await press('ArrowRight');await page.waitForTimeout(180);await pause();
+  assert.equal(await page.locator('.sentence.current').getAttribute('id'),'sentence-s2');
+  await press('4');await press('4');assert((await media()).paused);assert.equal(await page.locator('.sentence.current').getAttribute('id'),'sentence-s2');
+  check('loop navigation and repeated same-mode key retain the selected sentence');
+  await page.getByRole('button',{name:'设置与资源',exact:true}).click();
+  await page.getByLabel('正常听力（1× · 不循环）快捷键',{exact:true}).selectOption('KeyN');
+  await page.getByRole('button',{name:'保存设置',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('.toast')?.textContent?.includes('设置已保存'));
+  await page.getByRole('button',{name:'精听工作台',exact:true}).click();
+  await press('1');await assertMode('modeFastIntensive',1.25,'sentence');await press('n');await assertMode('modeNormal',1,'off');
+  await page.evaluate(()=>window.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowLeft',code:'Numpad4',bubbles:true})));
+  await assertMode('modeNormal',1,'off');
+  await page.evaluate(()=>window.dispatchEvent(new KeyboardEvent('keydown',{key:'4',code:'Numpad4',bubbles:true})));
+  await assertMode('modeFastIntensive',1.25,'sentence');
+  await page.waitForFunction(async()=>{const l=await window.api.call('lesson',{id:'course'});return l.rate===1.25&&l.loop==='sentence';});
+  assert.deepEqual((await api('lesson',{id:'course'})).sentences,lesson.sentences);
+  check('custom mode shortcuts, numpad and immediate course persistence work without modifying transcript');
+  await page.screenshot({path:path.join(reportDir,'modes-light.png')});
+  await page.setViewportSize({width:850,height:720});await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});
+  assert.equal(await page.locator('.player').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+  assert.equal(await page.locator('.player-options').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+  await page.screenshot({path:path.join(reportDir,'modes-dark-narrow.png')});check('light/dark and 850px layout without player overflow');
+  await app.close();app=null;await launch();await page.getByRole('heading',{name:lesson.title,exact:true}).click();
+  await assertMode('modeFastIntensive',1.25,'sentence');assert((await media()).paused);
+  await press('n');await assertMode('modeNormal',1,'off');check('course mode and custom shortcut restored after app restart');
+  report.passed=true;
+}finally{
+  if(worker)await worker.terminate();if(app)await app.close();
+  fs.writeFileSync(path.join(reportDir,packaged?'release.json':'checks.json'),JSON.stringify(report,null,2));
+}

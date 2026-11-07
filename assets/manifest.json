@@ -1,0 +1,194 @@
+[
+  {
+    "path": "models/translation/README.md",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/README.md",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 4603,
+    "sha256": "1fd660f130aedc5ecf1796b47ab47d43d3c4b36541f5387b7adb3df75cb5dfdb"
+  },
+  {
+    "path": "models/translation/config.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/config.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 189,
+    "sha256": "4244772990e30069563e3ddfb4ad6dc95bdfd2ac3de667ea8858c9b0a8433fa8"
+  },
+  {
+    "path": "models/translation/generation_config.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/generation_config.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 233,
+    "sha256": "aed76366507333ddbb8bd49960f23c82fe6446b3319a46a54befdb45324ccf61"
+  },
+  {
+    "path": "models/translation/model.bin",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/model.bin",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 490667713,
+    "sha256": "d6703dd9f920ff896e45c3d97b490761bed5944937b90bbe6a7245f5652542d4"
+  },
+  {
+    "path": "models/translation/sentencepiece.bpe.model",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/sentencepiece.bpe.model",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 2423393,
+    "sha256": "d8f7c76ed2a5e0822be39f0a4f95a55eb19c78f4593ce609e2edbc2aea4d380a"
+  },
+  {
+    "path": "models/translation/shared_vocabulary.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/shared_vocabulary.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 2796509,
+    "sha256": "7eb5d0ff184c6095c7c10f9911c0aea492250abd12854f9c3d787c64b1c6397e"
+  },
+  {
+    "path": "models/translation/special_tokens_map.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/special_tokens_map.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 1140,
+    "sha256": "c1a4f86c3874d279ae1b2a05162858db5dd6c61665d84223ed886cbcff08fda6"
+  },
+  {
+    "path": "models/translation/tokenizer_config.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/tokenizer_config.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 272,
+    "sha256": "ae54f15f0649bb05041cdadad8485ba1faf40bc33e6b4c2a74ae2d1ae5710fa2"
+  },
+  {
+    "path": "models/translation/vocab.json",
+    "url": "https://huggingface.co/jncraton/m2m100_418M-ct2-int8/resolve/7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0/vocab.json",
+    "source": "jncraton/m2m100_418M-ct2-int8",
+    "revision": "7c1b2620a4e58dacecbd8bf89cfd6da7eb9eb7b0",
+    "bytes": 3708092,
+    "sha256": "b6e77e474aeea8f441363aca7614317c06381f3eacfe10fb9856d5081d1074cc"
+  },
+  {
+    "path": "models/small/README.md",
+    "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/README.md",
+    "source": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "bytes": 1998,
+    "sha256": "329373481008c7c38654aff8ecdcf0163c211557cc7ba8e2ef6f2f84b4f75ec8"
+  },
+  {
+    "path": "models/small/config.json",
+    "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/config.json",
+    "source": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "bytes": 2370,
+    "sha256": "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828"
+  },
+  {
+    "path": "models/small/model.bin",
+    "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/model.bin",
+    "source": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "bytes": 483546902,
+    "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+  },
+  {
+    "path": "models/small/tokenizer.json",
+    "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json",
+    "source": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "bytes": 2203239,
+    "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+  },
+  {
+    "path": "models/small/vocabulary.txt",
+    "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt",
+    "source": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "bytes": 459861,
+    "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+  },
+  {
+    "path": "models/turbo/README.md",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/README.md",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 1445,
+    "sha256": "b3068692728faed23580cce5cd569fc47ff76c690c032b2641ffd5554ea64d8f"
+  },
+  {
+    "path": "models/turbo/config.json",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/config.json",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 2263,
+    "sha256": "b0253ea6c0d3bea6b1e19e91a02acfd3b53f4467362efcb5a3e6b16c9b3a9b7e"
+  },
+  {
+    "path": "models/turbo/model.bin",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/model.bin",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 1617884929,
+    "sha256": "e76620f83d5f5b69efd3d87e3dc180c1bd21df9fbebacfd4335e5e1efcc018da"
+  },
+  {
+    "path": "models/turbo/preprocessor_config.json",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/preprocessor_config.json",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 340,
+    "sha256": "7ccc62c6f2765af1f3b46c00c9b5894426835a05021c8b9c01eecb6dfb542711"
+  },
+  {
+    "path": "models/turbo/tokenizer.json",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/tokenizer.json",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 2710337,
+    "sha256": "297b13372ac43916285644fb9687add3cc62ee2a1adb60da3dc25cc94c1871fd"
+  },
+  {
+    "path": "models/turbo/vocabulary.json",
+    "url": "https://huggingface.co/mobiuslabsgmbh/faster-whisper-large-v3-turbo/resolve/0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf/vocabulary.json",
+    "source": "mobiuslabsgmbh/faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf",
+    "bytes": 1068114,
+    "sha256": "c69260f2ab26d659b7c398f9a2b2b48ed0df16c3b47d7326782fd9cba71690c1"
+  },
+  {
+    "path": "assets/dictionaries/wiktionary-ja-en.zip",
+    "url": "https://github.com/yomidevs/wiktionary-to-yomitan/releases/download/v2025-04-08-10-54-36-00-00/kty-ja-en.zip",
+    "source": "Wiktionary / Kaikki",
+    "revision": "v2025-04-08",
+    "bytes": 18601026,
+    "sha256": "0fc530c9198900097b031f17b2b8b7a174c01b590e36597ee6753e9d3d53c176"
+  },
+  {
+    "path": "assets/dictionaries/kanjium-pitch.zip",
+    "url": "https://raw.githubusercontent.com/FooSoft/yomichan/dictionaries/kanjium_pitch_accents.zip",
+    "source": "Kanjium / Uros Ozvatic",
+    "revision": "legacy",
+    "bytes": 1072708,
+    "sha256": "90d05ad6efc6f44a495bcc01db6b9d3a0f2f1c42ba38adcbefda0ddfaec8b8c2"
+  },
+  {
+    "path": "assets/dictionaries/jmdict-en.zip",
+    "url": "https://github.com/yomidevs/jmdict-yomitan/releases/download/2026-10-12/JMdict_english.zip",
+    "source": "yomidevs/jmdict-yomitan",
+    "revision": "2026-10-12",
+    "bytes": 15609387,
+    "sha256": "1b31f9f4200f684bf9ead6b90296777a4b72a5db3055dde25d5d3b9cde489070"
+  },
+  {
+    "path": "assets/dictionaries/jitendex-zh.zip",
+    "url": "https://github.com/greyindex/jitendex-yomitan-zh/releases/download/v2026.08.11-zh.4/jitendex-yomitan-zh-full-review-dedup-20260927.zip",
+    "source": "greyindex/jitendex-yomitan-zh",
+    "revision": "v2026.08.11-zh.4",
+    "bytes": 36703585,
+    "sha256": "9872fc32d05e3f7ea9b5b70a253610e49d99b6eef7db519b96faad1bbec2b678"
+  }
+]

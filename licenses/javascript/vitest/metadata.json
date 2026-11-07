@@ -1,0 +1,10 @@
+{
+  "name": "vitest",
+  "version": "5.0.4",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitest-dev/vitest.git",
+    "directory": "packages/vitest"
+  }
+}

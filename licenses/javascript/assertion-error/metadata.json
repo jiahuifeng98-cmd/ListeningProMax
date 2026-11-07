@@ -1,0 +1,9 @@
+{
+  "name": "assertion-error",
+  "version": "2.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:chaijs/assertion-error.git"
+  }
+}

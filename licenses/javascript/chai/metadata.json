@@ -1,0 +1,9 @@
+{
+  "name": "chai",
+  "version": "6.3.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaijs/chai"
+  }
+}

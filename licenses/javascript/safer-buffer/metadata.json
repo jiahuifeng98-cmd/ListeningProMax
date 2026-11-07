@@ -1,0 +1,9 @@
+{
+  "name": "safer-buffer",
+  "version": "2.1.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChALkeR/safer-buffer.git"
+  }
+}

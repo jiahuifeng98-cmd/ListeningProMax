@@ -1,0 +1,9 @@
+{
+  "name": "tinybench",
+  "version": "6.2.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "tinylibs/tinybench"
+  }
+}

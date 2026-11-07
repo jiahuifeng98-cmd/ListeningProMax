@@ -1,0 +1,9 @@
+{
+  "name": "zlibjs",
+  "version": "0.3.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imaya/zlib.js.git"
+  }
+}

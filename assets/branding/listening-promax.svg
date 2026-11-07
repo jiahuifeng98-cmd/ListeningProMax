@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512" role="img" aria-label="ListeningProMax">
+ <rect x="16" y="16" width="480" height="480" rx="112" fill="#0876ed"/>
+ <path d="M144 284v-40a112 112 0 0 1 224 0v40" fill="none" stroke="#fff" stroke-width="34" stroke-linecap="round"/>
+ <rect x="122" y="256" width="58" height="116" rx="27" fill="#fff"/>
+ <rect x="332" y="256" width="58" height="116" rx="27" fill="#fff"/>
+ <path d="M218 278v51M256 248v111M294 278v51" fill="none" stroke="#fff" stroke-width="19" stroke-linecap="round"/>
+</svg>

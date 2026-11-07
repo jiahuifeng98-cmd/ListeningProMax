@@ -1,0 +1,14 @@
+export type LoopMode = 'off' | 'sentence';
+export interface Word { text: string; startMs: number; endMs: number }
+export interface Sentence { id: string; text: string; startMs: number | null; endMs: number | null; words: Word[]; anchor?: boolean; endOrigin?: 'auto' | 'manual'; issues: string[]; translation?: string; translationSource?: string }
+export interface Lesson { id: string; title: string; createdAt: string; updatedAt: string; version: number; durationMs: number; mediaFile?: string; sourceMedia?: string; originalText: string; sentences: Sentence[]; reference: string; positionMs: number; rate: number; loop: LoopMode; selectedId?: string; hidden: boolean; referenceCollapsed: boolean }
+export interface Task { id: string; lessonId: string; kind: 'analyze' | 'realign' | 'translate' | 'organize' | 'segment'; state: 'queued' | 'running' | 'done' | 'error' | 'cancelled'; progress: number; stage: string; error?: string; dismissed?: boolean; errorKind?: 'alignment' | 'conflict' | 'timeout' | 'network' | 'process'; request: Record<string, unknown>; updatedAt: string }
+export interface Favorite { vocabulary?: import("./vocabulary").VocabularyTag; id: string; kind: 'word' | 'sentence'; key: string; text: string; reading?: string; meaning?: string; collectionCount?: number; origins: { lessonId: string; sentenceId?: string; referenceOffset?: number; referenceText?: string; positionMs?: number }[]; createdAt: string }
+export interface Entry { dictionary: string; expression: string; reading: string; readingSource?: string; meanings: string[]; language: string; source: string; pitches: number[] }
+export interface Lookup { query: string; entries: Entry[]; surfaceReading?: string; surfaceReadingSource?: string }
+export interface Settings { vocabulary?: import("./vocabulary").VocabularySettings; playback?: import("./playback").PlaybackSettings; appearance?: import('./appearance').Appearance; shortcuts?: import('./shortcuts').Shortcuts; sidebarCollapsed?: boolean; model: 'turbo' | 'small'; online: boolean; endpoint: string; apiKey: string; onlineModel: string; freeProvider?: 'bing'; onlineFallback?: boolean }
+export type LessonSummary=Omit<Lesson,'sentences'|'originalText'|'reference'> & {sentenceCount:number};
+export interface Library { lessons: LessonSummary[]; tasks: Task[]; dictionaries: { name: string; count: number; language: string }[]; settings: Settings; health: Record<string, boolean>; root: string; lightweight?: boolean }
+export type Edit = { kind: 'text'; id: string; text: string; startMs?: number | null; endMs?: number | null } | { kind: 'merge'; id: string } | { kind: 'split'; id: string; offset: number } | { kind: 'undo' } | { kind: 'reset' };
+export interface API { call<T = any>(method: string, args?: any): Promise<T>; onChange(cb: (event: { type: string; lessonId?: string; task?: Task; message?: string }) => void): () => void }
+declare global { interface Window { api: API } }

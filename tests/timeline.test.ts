@@ -1,0 +1,20 @@
+import { describe,it,expect } from 'vitest';
+import { formatTime,parseTime,editTimeline,parseTranscript,validateTimeline,assertSameText,targetAt } from '../src/shared/timeline';
+import type { Sentence } from '../src/shared/types';
+const sentence=(id:string,text:string,startMs:number|null,endMs:number|null):Sentence=>({id,text,startMs,endMs,words:[],issues:[]});
+describe('时间轴精度与编辑',()=>{
+ it.each([0,1,999,1000,60999,3600123,7200999,359999999])('毫秒时间往返 %i',ms=>expect(parseTime(formatTime(ms))).toBe(ms));
+ it.each(['00:60:00.000','00:00:60.000','00:00:01','-1:00:00.000','1.2','abc'])('拒绝无效时间 %s',value=>expect(()=>parseTime(value)).toThrow());
+ it('没有音频的文稿不编造时间',()=>{const list=parseTranscript('今日はいい天気です。\n散歩しましょう。','txt',()=>Math.random().toString());expect(list).toHaveLength(2);expect(list.every(s=>s.startMs===null)).toBe(true);});
+ it('跨字幕碎片合并完整句子，保留绝对时间',()=>{let id=0;const list=parseTranscript('1\n00:01:00,100 --> 00:01:01,900\n今日は\n\n2\n00:01:02,000 --> 00:01:04,300\nいい天気です。','srt',()=>String(id++));expect(list).toHaveLength(1);expect(list[0]).toMatchObject({text:'今日はいい天気です。',startMs:60100,endMs:64300});});
+ it('VTT 两位分钟与设置',()=>{const list=parseTranscript('WEBVTT\n\n00:01.001 --> 00:04.500 align:start\nこんにちは。\n','vtt',()=> 'x');expect(list[0].startMs).toBe(1001);});
+ it('无效字幕明确报错',()=>expect(()=>parseTranscript('not subtitles','srt',()=> 'x')).toThrow());
+ it('合并逐字保留并维护身份别名',()=>{const original=[sentence('a','今日は、',1000,2200),sentence('b','いい天気です。',2300,4500)];const result=editTimeline(original,{kind:'merge',id:'a'},()=> 'new');expect(result.sentences[0].text).toBe(original.map(s=>s.text).join(''));expect(result.sentences[0].endMs).toBe(4500);expect(result.aliases.b).toBe('a');expect(original).toHaveLength(2);});
+ it('无词级边界的拆分不按字数猜时间',()=>{const result=editTimeline([sentence('a','今日はいい天気です。',1000,4000)],{kind:'split',id:'a',offset:3},()=> 'b');expect(result.sentences.map(s=>s.text).join('')).toBe('今日はいい天気です。');expect(result.sentences.every(s=>s.startMs===null)).toBe(true);expect(result.realignFrom).toBe('a');});
+ it('词级边界拆分保留真实毫秒',()=>{const s=sentence('a','今日晴れ',1000,3000);s.words=[{text:'今日',startMs:1000,endMs:1800},{text:'晴れ',startMs:2000,endMs:3000}];const result=editTimeline([s],{kind:'split',id:'a',offset:2},()=> 'b');expect(result.sentences[0].endMs).toBe(1800);expect(result.sentences[1].endMs).toBe(3000);});
+ it('时间编辑固定锚点而不平移整课',()=>{const result=editTimeline([sentence('a','一。',1000,2000),sentence('b','二。',4000,5000)],{kind:'text',id:'a',text:'一。',startMs:1100,endMs:2100},()=> 'x');expect(result.sentences[0].anchor).toBe(true);expect(result.sentences[1].startMs).toBe(4000);});
+ it('文字编辑清除陈旧译文',()=>{const s={...sentence('a','今日。',0,1000),translation:'今天'};expect(editTimeline([s],{kind:'text',id:'a',text:'明日。'},()=> 'x').sentences[0].translation).toBeUndefined();});
+ it('防止非法时间与重复 ID',()=>{expect(()=>validateTimeline([sentence('a','x',1000,900)])).toThrow();expect(()=>validateTimeline([sentence('a','x',0,1000),sentence('a','y',1000,2000)])).toThrow();expect(()=>validateTimeline([sentence('a','x',0,2000)],1000)).toThrow();});
+ it('文本整理只允许标点和换行变化',()=>{expect(()=>assertSameText('今日\nはいい天気','今日は、いい天気。')).not.toThrow();expect(()=>assertSameText('今日はいい天気','明日はいい天気。')).toThrow();});
+ it('拖动按绝对播放位置查句而不依赖旧选中项',()=>{const items=[sentence('a','一',1000,2000),sentence('b','二',3000,4000)];expect(targetAt(items,3500)).toBe(1);expect(targetAt(items,0)).toBe(0);expect(targetAt(items,2500)).toBe(0);});
+});

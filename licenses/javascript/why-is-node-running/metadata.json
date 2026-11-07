@@ -1,0 +1,9 @@
+{
+  "name": "why-is-node-running",
+  "version": "3.2.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/why-is-node-running.git"
+  }
+}

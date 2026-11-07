@@ -1,0 +1,9 @@
+{
+  "name": "std-env",
+  "version": "4.3.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "unjs/std-env"
+  }
+}

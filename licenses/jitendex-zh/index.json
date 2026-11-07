@@ -1,0 +1,12 @@
+{
+  "title": "Jitendex.org [2026-08-11] 中文版 全库校订去重版",
+  "author": "Stephen Kraus",
+  "sequenced": true,
+  "format": 3,
+  "url": "https://github.com/greyindex/jitendex-yomitan-zh",
+  "sourceLanguage": "ja",
+  "targetLanguage": "zh",
+  "description": "非官方 Jitendex 日文→简体中文词典，基于2026-09-27全库模型校订版。全部211,107个有释义JMdict ID已有模型复校记录；专业疑点仍按校订报告保留待核。本包对全库同一义项内内容和格式完全一致的重复释义保留首次出现项，并清理释义及交叉引用摘要中以分号分隔的完全重复内容。不合并不同义项或近义译法，保留日文、读音、词性、例句、注释、图片、链接及来源。这是排版去重，不是新增语义校对。原校订字段编号以去重前版本为准，去重记录可追溯被移除项。后续公开版本请通过项目GitHub Releases获取。\n\nOriginal Jitendex by Stephen Kraus. Support the original project: https://ko-fi.com/jitendex",
+  "attribution": "© CC BY-SA 4.0 Stephen Kraus 2023-2026\n\nYou are free to use, modify, and redistribute Jitendex files under the terms of the Creative Commons Attribution-ShareAlike License (V4.0)\n\nJitendex includes material from several copyrighted sources in compliance with the terms and conditions of those projects.\n\n• JMdict (EDICT, etc.) dictionary data is provided by the Electronic Dictionaries Research Group. Visit edrdg.org for more information.\n• Example sentences (Japanese and English) are provided by Tatoeba (https://tatoeba.org/). This data is licensed CC BY 2.0 FR.",
+  "revision": "2026.08.11.0.zh-common5-luna-20260921.zh-common20-gpt6luna-20260923.zh-fullreview-20260927.dedup-20260927"
+}

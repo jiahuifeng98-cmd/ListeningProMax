@@ -1,0 +1,65 @@
+<!doctype html><html><meta charset="utf-8"><title>ListeningProMax · Promotional film source</title>
+<style>@font-face{font-family:Noto;src:url('../../cache/promo-assets/NotoSansSC.ttf')}html,body{margin:0;background:#f5f5f7;overflow:hidden}canvas{display:block;width:1440px;height:1080px}</style>
+<canvas width="1440" height="1080"></canvas><script>
+const c=document.querySelector('canvas'),g=c.getContext('2d',{alpha:false});
+const W=1440,H=1080,blue='#007aff',ink='#1d1d1f',muted='#6e6e73',paper='#f5f5f7';
+const images={};const source='../../reports/share-20261106/';
+window.ready=Promise.all(['translated','colored','dictionary','sentence','sentence-colored','color-controls','favorites','mode1','mode2','mode3','mode4'].map(name=>new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>{images[name]=i;resolve()};i.onerror=()=>reject(Error(name));i.src=source+name+'.png'})).concat([new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>{images.icon=i;resolve()};i.onerror=reject;i.src='../branding/listening-promax.png'}),document.fonts.load('600 80px Noto')])).then(()=>{window.render(0);return true});
+const clamp=x=>Math.max(0,Math.min(1,x)),ease=x=>1-Math.pow(1-clamp(x),4),smooth=x=>{x=clamp(x);return x*x*(3-2*x)},mix=(a,b,t)=>a+(b-a)*t;
+function rr(x,y,w,h,r,fill,stroke){g.beginPath();g.roundRect(x,y,w,h,r);if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=1;g.stroke()}}
+function text(s,x,y,size=30,weight=500,color=ink,align='left'){g.font=weight+' '+size+'px Noto,"Segoe UI",sans-serif';g.textAlign=align;g.textBaseline='alphabetic';g.fillStyle=color;g.fillText(s,x,y)}
+function pop(s,x,y,size,weight,color,t,delay=0){const a=ease((t-delay)/.65);g.save();g.globalAlpha*=a;text(s,x,y+(1-a)*45,size,weight,color);g.restore()}
+function windowImage(img,x,y,w,h,alpha=1){g.save();g.globalAlpha*=alpha;g.shadowColor='rgba(15,28,45,.15)';g.shadowBlur=48;g.shadowOffsetY=22;rr(x,y,w,h,24,'#fff');g.shadowColor='transparent';g.beginPath();g.roundRect(x,y,w,h,24);g.clip();g.drawImage(img,x,y,w,h);g.restore();rr(x,y,w,h,24,null,'rgba(30,40,60,.10)')}
+function fit(img,x,y,w,h){const s=Math.min(w/img.width,h/img.height);g.drawImage(img,x+(w-img.width*s)/2,y+(h-img.height*s)/2,img.width*s,img.height*s)}
+function label(n,s){text(n+'  /  '+s,90,72,20,600,muted)}
+function cursor(x,y,t,click=false){g.save();g.translate(x,y);g.shadowColor='#0003';g.shadowBlur=10;g.beginPath();g.moveTo(0,0);g.lineTo(0,30);g.lineTo(8,23);g.lineTo(15,37);g.lineTo(23,33);g.lineTo(16,19);g.lineTo(28,18);g.closePath();g.fillStyle='#1d1d1f';g.fill();g.strokeStyle='white';g.lineWidth=2;g.stroke();g.shadowBlur=0;if(click){const r=18+smooth(t)*38;g.globalAlpha*=1-clamp(t);g.strokeStyle=blue;g.lineWidth=3;g.beginPath();g.arc(4,7,r,0,Math.PI*2);g.stroke()}g.restore()}
+function wave(t,x,y,w,h){for(let i=0;i<64;i++){const a=Math.exp(-Math.pow((i-31)/24,2)),v=(.3+.7*Math.abs(Math.sin(i*.63+t*4.5)))*a;const bh=10+v*h;g.globalAlpha=.25+.75*a;rr(x+i*w/64,y-bh/2,5,bh,3,blue)}g.globalAlpha=1}
+function intro(t){
+ pop('ListeningProMax',125,206,28,600,ink,t);pop('把日语，',120,425,104,700,ink,t,.12);pop('一句句听懂。',120,565,104,700,ink,t,.30);
+ const q=ease((t-.2)/1.2);g.save();g.translate(1110,452);g.rotate((1-q)*-.12);g.scale(.8+.2*q,.8+.2*q);g.globalAlpha=q;g.shadowColor='#007aff22';g.shadowBlur=90;g.shadowOffsetY=26;g.drawImage(images.icon,-140,-140,280,280);g.restore();
+ pop('为专注而设计的日语精听工作台',128,671,30,400,muted,t,.6);wave(t,130,830,1180,66);
+ text('LISTEN. UNDERSTAND. REMEMBER.',130,964,17,500,muted);
+}
+function listening(t){label('01','逐句精听');pop('点一句，反复听。',90,166,70,700,ink,t);pop('逐句定位 · 单句循环 · 中文按需显示',94,219,28,400,muted,t,.13);
+ const q=ease(t/.9),w=1130+26*clamp(t/4),h=w*1000/1440,x=(W-w)/2,y=270+(1-q)*110;
+ windowImage(images.translated,x,y,w,h,q);
+ const cx=mix(1180,790,smooth((t-.5)/.8)),cy=mix(990,780,smooth((t-.5)/.8));if(t>.5)cursor(cx,cy,((t-1.3)%1),t>1.3&&t<2.3);
+ if(t>1.55){const a=ease((t-1.55)/.5);g.save();g.globalAlpha=a;rr(985,815,330,105,24,'#fff','#dce2ea');text('2',1023,881,32,600,blue);text('原速精听',1085,859,23,600);text('1×  ·  单句循环',1085,895,20,400,muted);g.restore()}
+}
+function modes(t){label('02','四种听力模式');pop('节奏，由你掌握。',90,170,76,700,ink,t);pop('数字键 1—4，即刻切换。',94,235,31,400,muted,t,.12);
+ const entries=[['1','正常听力','1×','不循环'],['2','原速精听','1×','单句循环'],['3','快速听力','1.25×','不循环'],['4','快速精听','1.25×','单句循环']],active=Math.min(3,Math.floor(Math.max(0,t-.09)/(2*60/130)));
+ entries.forEach((a,i)=>{const x=100+(i%2)*640,y=335+Math.floor(i/2)*220,p=ease((t-i*.09)/.65);g.save();g.globalAlpha=p;g.translate(0,(1-p)*60);const selected=i===active;rr(x,y,600,180,26,selected?'#e5f0ff':'#fff',selected?'#b8d6ff':'#e7e7eb');rr(x+30,y+46,76,76,18,selected?blue:'#f2f2f7');text(a[0],x+68,y+101,38,600,selected?'#fff':ink,'center');text(a[1],x+135,y+79,32,600);text(a[2]+'  ·  '+a[3],x+135,y+126,25,400,muted);g.restore()});
+ const p=ease((t-.35)/.6);g.save();g.globalAlpha=p;rr(360,832,720,153,26,'#fff','#e7e7eb');fit(images['mode'+(active+1)],395,852,650,110);g.restore();
+ text('速度与循环，一起到位。',720,1040,24,400,muted,'center');
+}
+function dictionary(t){label('03','划词即查');pop('遇到生词，划一下。',90,168,70,700,ink,t);pop('假名、释义与音调，在同一张词卡。',94,225,28,400,muted,t,.12);
+ const q=ease(t/.75);const w=1190,h=705,x=125,y=285+(1-q)*90;
+ g.save();g.globalAlpha=q;g.shadowColor='#10234416';g.shadowBlur=45;rr(x,y,w,h,28,'#fff');g.shadowBlur=0;g.beginPath();g.roundRect(x,y,w,h,28);g.clip();const s=w/images.dictionary.width;g.drawImage(images.dictionary,x,y,w,images.dictionary.height*s);g.restore();
+ const span=ease((t-.5)/.8);rr(162,350,252*span,48,9,'rgba(0,122,255,.12)');if(t>.5&&t<1.5)cursor(162+250*span,401,0,false);
+ g.save();g.globalAlpha=ease((t-1.0)/.5);rr(1080,905,250,62,31,blue);text('查词，不打断播放',1205,945,21,500,'#fff','center');g.restore();
+}
+function colors(t){label('04','彩色单词与收藏');pop('学习重点，一眼看见。',90,166,70,700,ink,t);pop('N1—N5 / 考研 203 · 自由筛选 · 收藏标注等级',94,221,28,400,muted,t,.1);
+ const y=300+(1-ease(t/.75))*80;const img=images['sentence-colored'],w=1260,h=img.height*w/img.width;
+ windowImage(images.sentence,90,y,w,h);
+ g.save();g.beginPath();g.rect(90,y,w*ease((t-.45)/.85),h);g.clip();g.drawImage(img,90,y,w,h);g.restore();
+ const labs=[['N1','#967300'],['N2','#c42b32'],['N3','#23783e'],['N4','#1765cf'],['N5','#ac28d4'],['考研','#1d1d1f']];
+ labs.forEach(([s,col],i)=>{const a=ease((t-.25-i*.075)/.6),x=160+i*194;g.save();g.globalAlpha=a;rr(x,650+(1-a)*30,150,66,20,'#fff','#e0e0e5');g.beginPath();g.arc(x+28,683+(1-a)*30,7,0,7);g.fillStyle=col;g.fill();text(s,x+87,694+(1-a)*30,26,600,col,'center');g.restore()});
+ const a=ease((t-1.0)/.6);g.save();g.globalAlpha=a;rr(230,773+(1-a)*45,980,200,26,'#fff','#e0e0e5');text('把反复遇见的词，留在收藏里。',720,840,34,600,ink,'center');text('按收藏次数排序  ·  记录等级  ·  随时返回原句',720,902,25,400,muted,'center');g.restore();
+ text('社区词表作学习参考；同词多级，按最低等级标注。',720,1038,21,400,muted,'center');
+}
+function outro(t){
+ const q=ease(t/.8);g.save();g.translate(720,260+(1-q)*40);g.scale(.85+.15*q,.85+.15*q);g.globalAlpha=q;g.drawImage(images.icon,-75,-75,150,150);g.restore();
+ g.save();g.globalAlpha=ease((t-.1)/.65);text('ListeningProMax',720,446+(1-ease((t-.1)/.65))*32,78,700,ink,'center');g.restore();
+ g.save();g.globalAlpha=ease((t-.25)/.65);text('解压即用。专注精听。',720,548,52,600,ink,'center');g.restore();
+ g.save();g.globalAlpha=ease((t-.45)/.6);rr(430,626,580,76,38,blue);text('打开软件，开始你的下一句。',720,675,28,500,'#fff','center');g.restore();
+ text('Windows 10 / 11 x64 · 无需开发环境',720,782,25,400,muted,'center');text('内置本地词典 · 免费联网翻译 · 识别模型按需下载',720,828,23,400,muted,'center');
+ text('界面操作演示经剪辑；非识别速度实录。',720,935,18,400,muted,'center');
+ text('Music: “Gimme that Groove!” — Michael Ramir C. / Mixkit',720,984,18,400,muted,'center');
+ text('Music & SFX: Mixkit Free Licenses · mixkit.co/license/',720,1017,17,400,muted,'center');
+}
+// Keep the established editorial rhythm; narration fits inside each scene.
+const beat=60/130,transition=.18,cuts=[6,14,22,30,38].map(n=>n*beat);
+const starts=[0,...cuts.map(t=>t-transition/2)];
+const scenes=[intro,listening,modes,dictionary,colors,outro].map((f,i)=>({s:starts[i],e:i<5?cuts[i]+transition/2:20.1,f}));
+window.render=t=>{g.globalAlpha=1;g.fillStyle=paper;g.fillRect(0,0,W,H);for(let i=0;i<scenes.length;i++){const sc=scenes[i];if(t<sc.s||t>=sc.e)continue;let alpha=1;if(i>0&&t<sc.s+transition)alpha=smooth((t-sc.s)/transition);g.save();g.globalAlpha=alpha;g.fillStyle=paper;g.fillRect(0,0,W,H);sc.f(t-sc.s);g.restore()}g.globalAlpha=1;return c.toDataURL('image/png').split(',')[1]};
+</script></html>
