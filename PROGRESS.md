@@ -170,3 +170,11 @@ node scripts\package.mjs
 本地原测试集 194 项通过，类型检查通过。进一步用仅含暂存源码的隔离副本验证，修复测试初始化对预存 cache 与 assets/kuromoji 的依赖后，193 项通过、1 项私人素材测试明确跳过。实际课程夹具仍保存在本机，未修改其内容。
 
 GitHub 账号目标 jiahuifeng98-cmd，仓库目标 ListeningProMax，用户已选择公开。发布状态以 reports/github-upload 中的后续远端验证为准；本节不代表已经上传。
+
+## 2026-11-08 · GitHub 公开仓库与分享版发布
+
+公开仓库已创建：https://github.com/jiahuifeng98-cmd/ListeningProMax 。首次源码提交为 `8bb039e018465f9c7813523c090c7c51204c945f`；远端 main 已核对一致。422 个源码、文档及许可文件约 2.7 MiB，个人课程、收藏、运行数据库、缓存、模型、依赖和本地登录凭据均排除。
+
+分享版已发布：https://github.com/jiahuifeng98-cmd/ListeningProMax/releases/tag/v1.9.0-share.20261107 。下载包 `ListeningProMax-2026.11.06-Windows-x64.zip` 为 576913638 字节，包含程序、图文说明书和宣传片。另提供独立宣传片及 SHA256SUMS.txt；三项资源均使用 GitHub 返回的大小和 SHA-256 与本地核对。ZIP 内容与本地分享包一致，未修改程序或用户数据。
+
+验证沿用本次源码准备时的类型检查、本地 194 项单元测试及公开源码副本 193 通过/1 项私人素材跳过；发布记录更新不改变应用代码。识别模型仍按需下载，Windows 10 干净虚拟机验收和人工句界精度验收仍未完成。临时文件清理与发布详情记录在本地 reports/github-upload。
